@@ -102,21 +102,24 @@ internal static class Program
 
     private static bool[,] GetFrameColors(Bitmap frame)
     {
-        var data = frame.LockBits(new Rectangle(0, 0, frame.Width, frame.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+        int width = frame.Width;
+        int height = frame.Height;
+        var data = frame.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
         var pixelSize = data.PixelFormat == PixelFormat.Format32bppArgb ? 4 : 3; // only works with 32 or 24 pixel-size bitmap!
         var padding = data.Stride - (data.Width * pixelSize);
         var bytes = new byte[data.Height * data.Stride];
 
-        var frameColor = new bool[frame.Width, frame.Height];
+        var frameColor = new bool[width, height];
 
         // copy the bytes from bitmap to array
         Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
 
         var index = 0;
         
-        for (var x = 0; x < frame.Width; x++)
+        for (var x = 0; x < width; x++)
         {
-            for (var y = 0; y < frame.Height; y++)
+            for (var y = 0; y < height; y++)
             {
                 frameColor[x, y] = IsOn(bytes[index+2], bytes[index+1], bytes[index]);
                 index += pixelSize;
@@ -135,7 +138,7 @@ internal static class Program
     private static (List<Frame>, int, int) ProcessFrame(string path, int rescaleFactor)
     {
         ConcurrentBag<Frame> result = new ConcurrentBag<Frame>();
-        var files = Directory.GetFiles(path, "*.png").OrderBy(x => int.Parse(x.Replace(path, "").Replace(".png", "").Replace("bad_apple_", ""))).ToList();
+        var files = Directory.GetFiles(path, "*.png").OrderBy(x => int.Parse(x.Replace(path, "").Replace("\\", "").Replace(".png", "").Replace("bad_apple_", ""))).ToList();
         var firstFrame = new Bitmap(files[0]);
         
         int width = firstFrame.Width / rescaleFactor;
