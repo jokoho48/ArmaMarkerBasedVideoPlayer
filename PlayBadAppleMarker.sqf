@@ -7,6 +7,8 @@ JK_height = JK_frames select 0 select 1;
 
 JK_frames = JK_frames select 1;
 
+JK_frameCount = count JK_frames;
+
 JK_FrameIndex = 0;
 
 JK_markers = [];
@@ -18,14 +20,13 @@ for "_y" from 1 to JK_height do {
         _pos = _pos vectorAdd [JK_width, JK_height];
         _pos = _pos vectorMultiply [10, 10];
 
-        private _marker = createMarkerLocal [format["%1_%2", _x, _y], [_x, _y]];
+        private _marker = createMarkerLocal [format["%1_%2", _x, _y], _pos];
         _marker setMarkerTypeLocal "mil_dot";
         _marker setMarkerColorLocal "ColorBlack";
         _marker setMarkerShadowLocal false;
         JK_markers pushBack _marker;
     };
 };
-reverse JK_markers;
 JK_frames = JK_frames apply {
     if (_x isEqualType 0) then {
         _x
@@ -60,17 +61,18 @@ _map ctrlAddEventHandler ["Draw", {
     diag_log _idx;
 
     JK_FrameIndex = JK_FrameIndex + 1;
-    if (JK_FrameIndex >= count JK_frames) then {
+    if (JK_FrameIndex >= JK_frameCount) then {
         JK_FrameIndex = 0;
     };
 }];
 
 addMissionEventHandler ["Map", {
     private _map = ((findDisplay 12) displayCtrl 51);
-    _map ctrlMapAnimAdd [0, 0.16, [436.507,368.001]];
+    _map ctrlMapAnimAdd [0, 0.16, [1092.48,782.646]];
     ctrlMapAnimCommit _map;
     0 spawn {
         sleep 1;
         JK_FrameIndex = 0;
+        playMusic "BadApple";
     };
 }];

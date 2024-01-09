@@ -6,6 +6,7 @@ JK_width = JK_frames select 0 select 0;
 JK_height = JK_frames select 0 select 1;
 
 JK_frames = JK_frames select 1;
+JK_frameCount = count JK_frames;
 
 JK_FrameIndex = 0;
 
@@ -51,7 +52,7 @@ _map ctrlAddEventHandler ["Draw", {
     } forEach _numberValues;
 
     JK_FrameIndex = JK_FrameIndex + 1;
-    if (JK_FrameIndex >= count JK_frames) then {
+    if (JK_FrameIndex >= JK_frameCount) then {
         JK_FrameIndex = 0;
     };
 }];

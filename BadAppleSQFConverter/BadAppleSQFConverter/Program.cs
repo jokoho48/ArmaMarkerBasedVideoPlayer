@@ -141,8 +141,8 @@ internal static class Program
         int width = firstFrame.Width / rescaleFactor;
         int height = firstFrame.Height / rescaleFactor;
 
-        // Parallel.For(0, files.Count, i =>
-        for (int i = 0; i < files.Count; i++)
+        Parallel.For(0, files.Count, i =>
+        //for (int i = 0; i < files.Count; i++)
         {
             var frameStr = new StringBuilder();
 
@@ -166,9 +166,9 @@ internal static class Program
             };
             frame.Compress();
             result.Add(frame);
-            Console.WriteLine($"Processed frame {frame.index} {result.Count}/6562");
+            Console.WriteLine($"Processed frame {frame.index} {result.Count}/{files.Count}");
         }
-        // );
+        );
 
         return (result.OrderBy(x => x.index).ToList(), width, height);
     }

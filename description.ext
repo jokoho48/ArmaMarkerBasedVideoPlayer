@@ -1,0 +1,9 @@
+class CfgMusic
+{
+    tracks[] = {};
+    class BadApple
+    {
+        name = "Bad Apple!!";
+        sound[] = { "\BadApple\bad_apple.wav", db + 10, 1.0 };
+    };
+};
