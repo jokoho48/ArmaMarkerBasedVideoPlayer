@@ -9,21 +9,31 @@ JK_frames = JK_frames select 1;
 
 JK_FrameIndex = 0;
 
+JK_frames = JK_frames apply {
+    if (_x isEqualType 0) then {
+        _x
+    } else {
+        private _numberValues = (_x regexFind ["[0-9]+"]) apply {parseNumber (_x select 0 select 0)};
+        private _values = (_x regexFind ["t|f"]) apply {[[0, 0, 0, 1], [1, 1, 1, 1]] select (_x select 0 select 0 == "t")};
+        [_numberValues, _values]
+    };
+};
+
 private _map = ((findDisplay 12) displayCtrl 51);
 
 _map ctrlAddEventHandler ["Draw", {
     private _ctrl = _this select 0;
-    private _frameStr = JK_frames select JK_FrameIndex;
-    if (_frameStr isEqualType 0) then {
-        _frameStr = JK_frames select _frameStr;
+    private _frameData = JK_frames select JK_FrameIndex;
+    if (_frameData isEqualType 0) then {
+        _frameData = JK_frames select _frameData;
     };
 
     private _xPos = 0;
     private _yPos = 0;
-    private _numberValues = (_frameStr regexFind ["[0-9]+"]) apply {parseNumber (_x select 0 select 0)};
-    private _values = (_frameStr regexFind ["t|f"]) apply {[[0, 0, 0, 1], [1, 1, 1, 1]] select (_x select 0 select 0 == "t")};
+    private _numberValues = _frameData select 0;
+    private _values = _frameData select 1;
     {
-        for "_i" from 0 to _x-1  do {
+        for "_i" from 0 to _x - 1 do {
             private _pos = [_xPos, _yPos];
             
             _pos = _pos vectorMultiply [-1, -1];
