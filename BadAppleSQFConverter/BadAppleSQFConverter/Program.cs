@@ -1,12 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using Windows.ApplicationModel.Activation;
-using Windows.Gaming.Input;
+
 
 namespace BadAppleSQFConverter;
 
@@ -84,7 +82,6 @@ internal static class Program
         writer.Write("[");
         writer.Write($"[{width},{height}], [");
         var first = true;
-        var debugOutputPath = Path.Join(args[0], "debug");
         foreach (var frame in frameData)
         {
             if (first)
@@ -96,7 +93,7 @@ internal static class Program
                 writer.Write(frame.duplicateOf);
             else
                 writer.Write("\"" + frame.data + "\"");
-            frame.ToBitmap(width, height).Save(Path.Join(debugOutputPath, $"frame_{frame.index}.png"));
+            // frame.ToBitmap(width, height).Save(Path.Join(args[0], "debug", $"frame_{frame.index}.png"));
         }
         writer.Write("]]");
         writer.Flush();
