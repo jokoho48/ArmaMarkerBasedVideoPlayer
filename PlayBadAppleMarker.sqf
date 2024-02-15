@@ -46,8 +46,6 @@ _map ctrlAddEventHandler ["Draw", {
         _frameData = JK_frames select _frameData;
     };
 
-    private _xPos = 0;
-    private _yPos = 0;
     private _numberValues = _frameData select 0;
     private _values = _frameData select 1;
     private _idx = 0;
@@ -57,8 +55,6 @@ _map ctrlAddEventHandler ["Draw", {
             _idx = _idx + 1;
         };
     } forEach _numberValues;
-
-    diag_log _idx;
 
     JK_FrameIndex = JK_FrameIndex + 1;
     if (JK_FrameIndex >= JK_frameCount) then {
