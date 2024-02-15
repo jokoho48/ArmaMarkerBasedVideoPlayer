@@ -1,1 +1,1 @@
-call compile preprocessFileLineNumbers "PlayBadAppleMarker.sqf";
+call compileScript ["PlayBadAppleMarker.sqf"];

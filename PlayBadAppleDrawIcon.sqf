@@ -1,6 +1,6 @@
 disableSerialization;
 
-JK_frames = call compile loadFile "BadApple.sqf";
+JK_frames = call compileScript ["BadApple.sqf"];
 
 JK_width = JK_frames select 0 select 0;
 JK_height = JK_frames select 0 select 1;
