@@ -9,6 +9,7 @@ JK_frames = JK_frames select 1;
 JK_frameCount = count JK_frames;
 
 JK_FrameIndex = 0;
+JK_PlayTime = 0;
 
 JK_frames = JK_frames apply {
     if (_x isEqualType 0) then {
@@ -51,9 +52,11 @@ _map ctrlAddEventHandler ["Draw", {
         };
     } forEach _numberValues;
 
-    JK_FrameIndex = JK_FrameIndex + 1;
+    JK_PlayTime = JK_PlayTime + diag_deltaTime;
+    JK_FrameIndex = JK_PlayTime * 30;
     if (JK_FrameIndex >= JK_frameCount) then {
         JK_FrameIndex = 0;
+        JK_PlayTime = 0;
     };
 }];
 
@@ -64,5 +67,6 @@ addMissionEventHandler ["Map", {
     0 spawn {
         sleep 1;
         JK_FrameIndex = 0;
+        JK_PlayTime = 0;
     };
 }];
