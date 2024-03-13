@@ -1,1 +1,1 @@
-call compileScript ["PlayBadAppleMarker.sqf"];
+call compileScript ["PlayMarkerVideo.sqf"];
