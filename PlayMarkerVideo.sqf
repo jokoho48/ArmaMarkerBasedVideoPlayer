@@ -1,6 +1,6 @@
 disableSerialization;
-
-JK_frames = call compileScript ["Video.sqf"];
+params [["_file", "Video.sqf"], ["_markerType", "mil_dot"]];
+JK_frames = call compileScript [_file];
 
 JK_width = JK_frames select 0 select 0;
 JK_height = JK_frames select 0 select 1;
@@ -32,7 +32,7 @@ for "_y" from 1 to JK_height do {
         _pos = _pos vectorMultiply [10, 10];
 
         private _marker = createMarkerLocal [format["%1_%2", _x, _y], _pos];
-        _marker setMarkerTypeLocal "mil_dot";
+        _marker setMarkerTypeLocal _markerType;
         _marker setMarkerColorLocal "ColorBlack";
         _marker setMarkerShadowLocal false;
         JK_markers pushBack _marker;
