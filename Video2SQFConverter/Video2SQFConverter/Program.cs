@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -125,6 +126,7 @@ internal static class Program
         var (frameData, width, height) = ProcessFrame(args[0], rescaleFactor, colors);
         DeduplicateFrames(frameData);
 
+        colors = RemoveUnusedColors(colors, frameData);
         TextWriter writer = new StreamWriter(Path.Join(args[0], "Video.sqf"));
         writer.WriteLine("[");
         writer.WriteLine($"[{width},{height},{frameRate}],");
@@ -148,6 +150,21 @@ internal static class Program
         writer.Write("]]");
         writer.Flush();
         writer.Close();
+    }
+
+    private static List<MarkerColor> RemoveUnusedColors(List<MarkerColor> colors, List<Frame> frameData)
+    {
+        var usedColors = new HashSet<char>();
+        var availableColors = colors.Select(x => x.SerializedName).ToList();
+        foreach (var frame in frameData)
+        {
+            foreach (var c in frame.Data)
+            {
+                if (availableColors.Contains(c))
+                    usedColors.Add(c);
+            }
+        }
+        return colors.Where(x => usedColors.Contains(x.SerializedName)).ToList();
     }
 
     private static void InsertColorMap(List<MarkerColor> colors, TextWriter writer)
