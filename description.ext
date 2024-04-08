@@ -6,4 +6,9 @@ class CfgMusic
         name = "Bad Apple!!";
         sound[] = { "\BadApple\bad_apple.wav", db + 10, 1.0 };
     };
+	class RickRoll
+    {
+        name = "getting Rolled?";
+        sound[] = { "\rickroll\rickroll.wav", db + 10, 1.0 };
+    };
 };

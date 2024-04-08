@@ -4,6 +4,7 @@ JK_frames = call compileScript ["Video.sqf"];
 
 JK_width = JK_frames select 0 select 0;
 JK_height = JK_frames select 0 select 1;
+JK_frameRate = JK_frames select 0 select 2;
 
 JK_colorMap = createHashMap;
 {
@@ -14,6 +15,9 @@ JK_TokenRegex = (keys JK_colorMap) joinString "|";
 JK_frames = JK_frames select 2;
 
 JK_frameCount = count JK_frames;
+
+JK_prevFrameData = [];
+JK_prevFrameIndex = -1;
 
 JK_FrameIndex = 0;
 JK_PlayTime = 0;
@@ -48,8 +52,22 @@ JK_frames = JK_frames apply {
 private _map = ((findDisplay 12) displayCtrl 51);
 
 _map ctrlAddEventHandler ["Draw", {
+    JK_PlayTime = JK_PlayTime + diag_deltaTime;
+    JK_FrameIndex = JK_PlayTime * JK_frameRate;
+    if (JK_FrameIndex >= JK_frameCount) then {
+        JK_FrameIndex = 0;
+        JK_PlayTime = 0;
+    };
+
+    if (JK_prevFrameIndex isEqualTo JK_FrameIndex) exitWith {};
+    JK_prevFrameIndex = JK_FrameIndex;
+
     private _ctrl = _this select 0;
     private _frameData = JK_frames select JK_FrameIndex;
+
+    if (JK_prevFrameData isEqualTo _frameData) exitWith {};
+    JK_prevFrameData = _frameData;
+
     if (_frameData isEqualType 0) then {
         _frameData = JK_frames select _frameData;
     };
@@ -64,12 +82,7 @@ _map ctrlAddEventHandler ["Draw", {
         };
     } forEach _numberValues;
 
-    JK_PlayTime = JK_PlayTime + diag_deltaTime;
-    JK_FrameIndex = JK_PlayTime * 30;
-    if (JK_FrameIndex >= JK_frameCount) then {
-        JK_FrameIndex = 0;
-        JK_PlayTime = 0;
-    };
+
 }];
 
 addMissionEventHandler ["Map", {
@@ -77,7 +90,7 @@ addMissionEventHandler ["Map", {
     _map ctrlMapAnimAdd [0, 0.16, [1092.48,782.646]];
     ctrlMapAnimCommit _map;
     0 spawn {
-        sleep 1;
+        playMusic "RickRoll";
         JK_FrameIndex = 0;
         JK_PlayTime = 0;
     };

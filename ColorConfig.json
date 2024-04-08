@@ -1,0 +1,134 @@
+[
+	{
+		"SerializedName": "a",
+		"MarkerName": "Default",
+		"Red": 0,
+		"Green": 0,
+		"Blue": 0,
+		"Weight": 2
+	},
+	{
+		"SerializedName": "b",
+		"MarkerName": "ColorBlack",
+		"Red": 0,
+		"Green": 0,
+		"Blue": 0,
+		"Weight": 2
+	},
+	{
+		"SerializedName": "c",
+		"MarkerName": "ColorGrey",
+		"Red": 0.5,
+		"Green": 0.5,
+		"Blue": 0.5,
+		"Weight": 3
+	},
+	{
+		"SerializedName": "d",
+		"MarkerName": "ColorRed",
+		"Red": 0.9,
+		"Green": 0,
+		"Blue": 0
+	},
+	{
+		"SerializedName": "e",
+		"MarkerName": "ColorBrown",
+		"Red": 0.5,
+		"Green": 0.25,
+		"Blue": 0
+	},
+	{
+		"SerializedName": "f",
+		"MarkerName": "ColorOrange",
+		"Red": 0.85,
+		"Green": 0.4,
+		"Blue": 0
+	},
+	{
+		"SerializedName": "g",
+		"MarkerName": "ColorYellow",
+		"Red": 0.85,
+		"Green": 0.85,
+		"Blue": 0
+	},
+	{
+		"SerializedName": "h",
+		"MarkerName": "ColorKhaki",
+		"Red": 0.5,
+		"Green": 0.6,
+		"Blue": 0.4,
+		"Weight": 1
+	},
+	{
+		"SerializedName": "i",
+		"MarkerName": "ColorGreen",
+		"Red": 0,
+		"Green": 0.8,
+		"Blue": 0
+	},
+	{
+		"SerializedName": "j",
+		"MarkerName": "ColorBlue",
+		"Red": 0,
+		"Green": 0,
+		"Blue": 1
+	},
+	{
+		"SerializedName": "k",
+		"MarkerName": "ColorPink",
+		"Red": 1,
+		"Green": 0.3,
+		"Blue": 0.4
+	},
+	{
+		"SerializedName": "l",
+		"MarkerName": "ColorWhite",
+		"Red": 1,
+		"Green": 1,
+		"Blue": 1,
+		"Weight": 2
+	},
+	{
+		"SerializedName": "m",
+		"MarkerName": "Color1_FD_F",
+		"Red": 0.694118,
+		"Green": 0.2,
+		"Blue": 0.223529
+	},
+	{
+		"SerializedName": "n",
+		"MarkerName": "Color2_FD_F",
+		"Red": 0.678431,
+		"Green": 0.74902,
+		"Blue": 0.513726
+	},
+	{
+		"SerializedName": "o",
+		"MarkerName": "Color3_FD_F",
+		"Red": 0.941176,
+		"Green": 0.509804,
+		"Blue": 0.192157
+	},
+	{
+		"SerializedName": "p",
+		"MarkerName": "Color4_FD_F",
+		"Red": 0.403922,
+		"Green": 0.545098,
+		"Blue": 0.607843
+	},
+	{
+		"SerializedName": "q",
+		"MarkerName": "Color5_FD_F",
+		"Red": 0.690196,
+		"Green": 0.25098,
+		"Blue": 0.654902
+	},
+	{
+		"SerializedName": "r",
+		"MarkerName": "Color6_FD_F",
+		"Red": 0.352941,
+		"Green": 0.34902,
+		"Blue": 0.352941,
+		"Weight": 3
+	}
+]
