@@ -76,8 +76,9 @@ _map ctrlAddEventHandler ["Draw", {
     private _values = _frameData select 1;
     private _idx = 0;
     {
+        private _color = _value select _forEachIndex;
         for "_i" from 0 to _x - 1 do {
-            (JK_markers select _idx) setMarkerColorLocal (_values select _forEachIndex);
+            (JK_markers select _idx) setMarkerColorLocal _color;
             _idx = _idx + 1;
         };
     } forEach _numberValues;
