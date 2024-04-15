@@ -123,7 +123,7 @@ internal static class Program
 
         var colors = ParseColors(args[0]);
         quantizer = PredefinedColorsQuantizer.FromCustomPalette(colors.Select(x => x.Color).ToArray());
-        var (frameData, width, height) = ProcessFrame(args[0], rescaleFactor, colors);
+        var (frameData, width, height) = ProcessFrames(args[0], rescaleFactor, colors);
         DeduplicateFrames(frameData);
 
         colors = RemoveUnusedColors(colors, frameData);
@@ -184,6 +184,7 @@ internal static class Program
     private static readonly List<MarkerColor> defaultColors = [new MarkerColor { SerializedName = 'b', MarkerName = "Black", Red = 0, Blue = 0, Green = 0, Weight = 0, }, new MarkerColor { SerializedName = 'w', MarkerName = "White", Red = 1, Blue = 1, Green = 1, Weight = 0, }];
     private static List<MarkerColor> ParseColors(string path)
     {
+        Console.WriteLine("ParseColors");
         path = Path.Join(path, "ColorConfig.json");
         if (!File.Exists(path)) return defaultColors;
         var file = File.ReadAllText(path);
@@ -235,8 +236,9 @@ internal static class Program
         return result;
     }
 
-    private static (List<Frame>, int, int) ProcessFrame(string path, int rescaleFactor, List<MarkerColor> colors)
+    private static (List<Frame>, int, int) ProcessFrames(string path, int rescaleFactor, List<MarkerColor> colors)
     {
+        Console.WriteLine("ProcessFrames");
         var result = new ConcurrentBag<Frame>();
         var files = Directory.GetFiles(path, "*.png").OrderBy(x => int.Parse(x.Replace(path, "").Replace("\\", "").Replace(".png", ""))).ToList();
         var firstFrame = new Bitmap(files[0]);
@@ -281,6 +283,7 @@ internal static class Program
 
     private static void DeduplicateFrames(List<Frame> frames)
     {
+        Console.WriteLine("DeduplicateFrames");
         var cache = new Dictionary<string, int>();
         foreach (var frame in frames)
         {

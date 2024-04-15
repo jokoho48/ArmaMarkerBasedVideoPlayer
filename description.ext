@@ -6,9 +6,14 @@ class CfgMusic
         name = "Bad Apple!!";
         sound[] = { "\BadApple\bad_apple.wav", db + 10, 1.0 };
     };
-	class RickRoll
+    class RickRoll
     {
         name = "getting Rolled?";
         sound[] = { "\rickroll\rickroll.wav", db + 10, 1.0 };
+    };
+    class Interstella5555
+    {
+        name = "Daft Punk - Interstella 5555";
+        sound[] = { "\Interstella5555\instastella555.wav", db + 10, 1.0 };
     };
 };

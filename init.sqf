@@ -1,1 +1,1 @@
-call compileScript ["PlayMarkerVideo.sqf"];
+["Video.sqf", "mil_box", true] call compileScript ["PlayMarkerVideo.sqf"];
