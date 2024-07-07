@@ -1,10 +1,8 @@
 ﻿using KGySoft.Drawing;
 using KGySoft.Drawing.Imaging;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -239,8 +237,9 @@ internal static class Program
     private static (List<Frame>, int, int) ProcessFrames(string path, int rescaleFactor, List<MarkerColor> colors)
     {
         Console.WriteLine("ProcessFrames");
-        var result = new ConcurrentBag<Frame>();
+        
         var files = Directory.GetFiles(path, "*.png").OrderBy(x => int.Parse(x.Replace(path, "").Replace("\\", "").Replace(".png", ""))).ToList();
+        var result = new Frame[files.Count];
         var firstFrame = new Bitmap(files[0]);
 
         var width = firstFrame.Width / rescaleFactor;
@@ -272,8 +271,9 @@ internal static class Program
                 Data = frameStr.ToString()
             };
             frame.Compress();
-            result.Add(frame);
-            Console.WriteLine($"Processed frame {frame.Index} {result.Count}/{files.Count}");
+            result[i] = frame;
+            if (i % 1000 == 0)
+                Console.WriteLine($"Processed frame {frame.Index} ({files.Count})");
             if (debug)
                 frame.ToBitmap(width, height, colors).Save(Path.Join(path, "debug", $"frame_{frame.Index}.png"));
         });
