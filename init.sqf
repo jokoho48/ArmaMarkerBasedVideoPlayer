@@ -1,1 +1,1 @@
-["Video.sqf", "mil_box", true] call compileScript ["PlayMarkerVideo.sqf"];
+["beemovie\Video.sqf", "mil_box", true, "BeeMovie", 0.111628, [888.629, 501.534]] call compileScript ["PlayMarkerVideo.sqf"];

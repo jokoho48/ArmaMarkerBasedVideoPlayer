@@ -16,4 +16,9 @@ class CfgMusic
         name = "Daft Punk - Interstella 5555";
         sound[] = { "\Interstella5555\instastella555.wav", db + 10, 1.0 };
     };
+	class BeeMovie
+	{
+		name = "Bee Movie";
+		sound[] = { "\beemovie\beemovie.ogg", db + 10, 1.0 };
+	}
 };
