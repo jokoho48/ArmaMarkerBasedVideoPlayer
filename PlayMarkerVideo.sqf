@@ -1,5 +1,5 @@
 disableSerialization;
-params [["_file", "Video.sqf"], ["_markertype", "mil_dot"], ["_skipPreprocessing", false], ["_musicTrack", ""], ["_mapZoom", 0.111628], ["_mapPos", [888.629, 501.534]]];
+params [["_file", "Video.sqf"], ["_markertype", "mil_dot"], ["_skipPreprocessing", false], ["_musicTrack", ""], ["_mapZoom", 0.111628], ["_mapPos", [888.629, 501.534]], ["_preUnpack", false]];
 
 diag_log "load Video";
 JK_MusicTrack = _musicTrack;
@@ -8,6 +8,7 @@ JK_frames = call compileScript [_file];
 diag_log "Video loaded";
 
 JK_skipPreprocessing = _skipPreprocessing;
+JK_PreUnpack = _preUnpack;
 
 JK_width = JK_frames select 0 select 0;
 JK_height = JK_frames select 0 select 1;
@@ -76,6 +77,34 @@ isNil {
         };
         diag_log "Frame Data PreProcessed";
     };
+
+    if (JK_PreUnpack) then {
+
+        diag_log "Unpack Frame Data";
+        private _frames = [];
+        {
+            if (_x isEqualType 0) then {
+                _x
+            } else {
+                _x params ["_numberValues", "_values"];
+                private _frame = [];
+                private _idx = 0;
+                {
+                    private _color = _values select _forEachindex;
+                    for "_i" from 0 to _x - 1 do {
+                        _frame pushBack _color;
+                        _idx = _idx + 1;
+                    };
+                } forEach _numberValues;
+
+                _frames pushBack _frame;
+            };
+        } forEach JK_frames;
+
+        JK_frames = _frames;
+
+        diag_log "Frame Data Unpacked";
+    };
 };
 
 addMissionEventHandler ["Map", {
@@ -127,15 +156,24 @@ _map ctrlAddEventHandler ["Draw", {
         };
         _frameData = [_numberValues, _values];
     };
-    
-    _frameData params ["_numberValues", "_values"];
 
-    private _idx = 0;
-    {
-        private _color = _values select _forEachindex;
-        for "_i" from 0 to _x - 1 do {
-            (JK_markers select _idx) setMarkerColorLocal _color;
-            _idx = _idx + 1;
-        };
-    } forEach _numberValues;
+    if (JK_PreUnpack) then {
+
+        {
+            (JK_markers select _forEachIndex) setMarkerColorLocal _x;
+        } forEach _frameData;
+
+    } else {
+        _frameData params ["_numberValues", "_values"];
+
+        private _idx = 0;
+        {
+            private _color = _values select _forEachindex;
+            for "_i" from 0 to _x - 1 do {
+                (JK_markers select _idx) setMarkerColorLocal _color;
+                _idx = _idx + 1;
+            };
+        } forEach _numberValues;
+    };
+    
 }];

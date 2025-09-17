@@ -1,1 +1,1 @@
-["Caramelldansen\Video.sqf", "mil_box", false, "Caramelldansen", 0.115325, [1161.73, 635.324]] spawn compileScript ["PlayMarkerVideo.sqf"];0
+["Caramelldansen\Video.sqf", "mil_box", false, "Caramelldansen", 0.115325, [1161.73, 635.324], true] spawn compileScript ["PlayMarkerVideo.sqf"];
