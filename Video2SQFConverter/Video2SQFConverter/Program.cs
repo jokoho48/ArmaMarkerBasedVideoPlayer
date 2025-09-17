@@ -94,7 +94,7 @@ internal static class Program
     private static void Main(string[] args)
     {
         var rescaleFactor = 1;
-        var frameRate = 30;
+        var frameRate = 30f;
 
         var index = 1;
         while (index < args.Length)
@@ -106,7 +106,7 @@ internal static class Program
                     index += 2;
                     break;
                 case "-f":
-                    frameRate = int.Parse(args[index + 1]);
+                    frameRate = float.Parse(args[index + 1], System.Globalization.CultureInfo.InvariantCulture);
                     index += 2;
                     break;
                 case "-d":
@@ -127,7 +127,7 @@ internal static class Program
         colors = RemoveUnusedColors(colors, frameData);
         TextWriter writer = new StreamWriter(Path.Join(args[0], "Video.sqf"));
         writer.WriteLine("[");
-        writer.WriteLine($"[{width},{height},{frameRate}],");
+        writer.WriteLine($"[{width:0},{height:0},{frameRate:0.00}],");
         writer.WriteLine("[");
         InsertColorMap(colors, writer);
         writer.WriteLine("],");

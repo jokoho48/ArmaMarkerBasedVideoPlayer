@@ -15,6 +15,7 @@ JK_frameRate = JK_frames select 0 select 2;
 
 diag_log "Create Color Hashmap";
 JK_colorMap = createHashMap;
+
 {
     JK_colorMap set [_x select 0, _x select 1];
 } forEach (JK_frames select 1);
@@ -35,42 +36,69 @@ JK_mapPos = _mapPos;
 
 JK_markers = [];
 
-diag_log "Create Markers";
-for "_y" from 1 to JK_height do {
-    for "_x" from 1 to JK_width do {
-        private _pos = [_x, _y];
-        _pos = _pos vectorMultiply [-1, -1];
-        _pos = _pos vectorAdd [JK_width, JK_height];
-        _pos = _pos vectorMultiply [10, 10];
-        
-        private _marker = createMarkerlocal [format["%1_%2", _x, _y], _pos];
-        _marker setMarkertypeLocal _markertype;
-        _marker setMarkerColorLocal "ColorBlack";
-        _marker setMarkerShadowlocal false;
-        JK_markers pushBack _marker;
-    };
-};
-diag_log "Marker Created";
+isNil {
 
-if (JK_skipPreprocessing) then {
-    diag_log "Skipped Preprocessing data";
-} else {
-    diag_log "PreProcess Frame Data";
-    JK_frames = JK_frames apply {
-        if (_x isEqualtype 0) then {
-            _x
-        } else {
-            private _numberValues = (_x regexfind ["[0-9]+"]) apply {
-                parseNumber (_x select 0 select 0)
-            };
-            private _values = (_x regexfind [JK_tokenRegex]) apply {
-                JK_colorMap get (_x select 0 select 0)
-            };
-            [_numberValues, _values]
+    diag_log "Create Markers";
+
+    for "_y" from 1 to JK_height do {
+        for "_x" from 1 to JK_width do {
+            private _pos = [_x, _y];
+            _pos = _pos vectorMultiply [1, -1];
+            _pos = _pos vectorAdd [0, JK_height];
+            _pos = _pos vectorMultiply [10, 10];
+
+            private _marker = createMarkerlocal [format["%1_%2", _x, _y], _pos];
+            _marker setMarkerTypeLocal _markertype;
+            _marker setMarkerColorLocal "ColorBlack";
+            _marker setMarkerShadowLocal false;
+            JK_markers pushBack _marker;
         };
     };
-    diag_log "Frame Data PreProcessed";
+
+    diag_log "Marker Created";
+
+    if (JK_skipPreprocessing) then {
+        diag_log "Skipped Preprocessing data";
+    } else {
+        diag_log "PreProcess Frame Data";
+        JK_frames = JK_frames apply {
+            if (_x isEqualType 0) then {
+                _x
+            } else {
+                private _numberValues = (_x regexFind ["[0-9]+"]) apply {
+                    parseNumber (_x select 0 select 0)
+                };
+                private _values = (_x regexFind [JK_tokenRegex]) apply {
+                    JK_colorMap get (_x select 0 select 0)
+                };
+                [_numberValues, _values]
+            };
+        };
+        diag_log "Frame Data PreProcessed";
+    };
 };
+
+addMissionEventHandler ["Map", {
+	params ["_mapisOpen"];
+
+	private _map = ((findDisplay 12) displayCtrl 51);
+	if (_mapisOpen) then {
+		_map ctrlMapAnimAdd [0, JK_mapZoom, JK_mapPos];
+		ctrlMapAnimCommit _map;
+		JK_Frameindex = 0;
+		JK_Playtime = 0;
+		if (JK_MusicTrack != "") then {
+			playMusic [JK_MusicTrack, JK_Playtime];
+		};
+	} else {
+		playMusic "";
+		JK_mapPos = _map ctrlMapScreenToWorld [0.5, 0.5];
+		JK_mapZoom = ctrlMapScale _map;
+		copyToClipboard str [0, JK_mapZoom, JK_mapPos];
+	};
+}];
+
+waitUntil {!(isNull (findDisplay 12))};
 
 private _map = ((findDisplay 12) displayCtrl 51);
 
@@ -83,27 +111,25 @@ _map ctrlAddEventHandler ["Draw", {
     };
     if (JK_prevFrameindex isEqualto JK_Frameindex) exitwith {};
     JK_prevFrameindex = JK_Frameindex;
-    
     private _frameData = JK_frames select JK_Frameindex;
     if (JK_prevFrameData isEqualto _frameData) exitwith {};
     JK_prevFrameData = _frameData;
-    
     if (_frameData isEqualtype 0) then {
         _frameData = JK_frames select _frameData;
     };
     
     if (JK_skipPreprocessing) then {
-        private _numberValues = (_frameData regexfind ["[0-9]+"]) apply {
+        private _numberValues = (_frameData regexFind ["[0-9]+"]) apply {
             parseNumber (_x select 0 select 0)
         };
-        private _values = (_frameData regexfind [JK_tokenRegex]) apply {
+        private _values = (_frameData regexFind [JK_tokenRegex]) apply {
             JK_colorMap get (_x select 0 select 0)
         };
         _frameData = [_numberValues, _values];
     };
     
     _frameData params ["_numberValues", "_values"];
-    
+
     private _idx = 0;
     {
         private _color = _values select _forEachindex;
@@ -112,24 +138,4 @@ _map ctrlAddEventHandler ["Draw", {
             _idx = _idx + 1;
         };
     } forEach _numberValues;
-}];
-
-addMissionEventHandler ["Map", {
-    params ["_mapisOpen"];
-    
-    private _map = ((findDisplay 12) displayCtrl 51);
-    if (_mapisOpen) then {
-        _map ctrlmapAnimAdd [0, JK_mapZoom, JK_mapPos];
-        ctrlmapAnimCommit _map;
-        JK_Frameindex = 0;
-        JK_Playtime = 0;
-        if (JK_MusicTrack != "") then {
-            playMusic [JK_MusicTrack, JK_Playtime];
-        };
-    } else {
-        playMusic "";
-        JK_mapPos = _map ctrlMapscreentoWorld [0.5, 0.5];
-        JK_mapZoom = ctrlMapScale _map;
-        copytoClipboard str [0, JK_mapZoom, JK_mapPos];
-    };
 }];

@@ -20,5 +20,10 @@ class CfgMusic
 	{
 		name = "Bee Movie";
 		sound[] = { "\beemovie\beemovie.ogg", db + 10, 1.0 };
-	}
+	};
+	class Caramelldansen
+	{
+		name = "Caramelldansen";
+		sound[] = { "\Caramelldansen\caramelldansen.ogg", db + 10, 1.0 };
+	};
 };
